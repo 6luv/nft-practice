@@ -6,6 +6,7 @@ import Header from "./Header";
 
 export interface OutletContext {
   mintContract: Contract | null;
+  signer: JsonRpcSigner | null;
 }
 
 const Layout: FC = () => {
@@ -20,7 +21,7 @@ const Layout: FC = () => {
         setMintContract={setMintContract}
       />
       <Flex flexGrow={1}>
-        <Outlet context={{ mintContract }} />
+        <Outlet context={{ mintContract, signer }} />
       </Flex>
     </Flex>
   );
