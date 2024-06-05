@@ -38,7 +38,6 @@ const MintNft: FC = () => {
   return (
     <>
       <Flex
-        bgColor="red.100"
         w="100%"
         justifyContent="center"
         alignItems="center"
