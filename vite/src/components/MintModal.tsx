@@ -42,8 +42,8 @@ const MintModal: FC<MintModalProps> = ({ isOpen, onClose, nftMetadata }) => {
             Traits
           </Text>
           <Flex flexWrap="wrap" mt={4} gap={2} justifyContent="center">
-            {nftMetadata?.attributes?.map((v) => (
-              <Box border="1px solid green" p={1} rounded="md">
+            {nftMetadata?.attributes?.map((v, i) => (
+              <Box key={i} border="1px solid green" p={1} rounded="md">
                 <Text borderBottom="1px solid green">{v.trait_type}</Text>
                 <Text>{v.value}</Text>
               </Box>

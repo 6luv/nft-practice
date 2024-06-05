@@ -7,11 +7,14 @@ import MintModal from "../components/MintModal";
 
 const MintNft: FC = () => {
   const [nftMetadata, setNftMetadata] = useState<NftMetadata>();
+  const [isLoading, setIsLoading] = useState<boolean>();
   const { mintContract, signer } = useOutletContext<OutletContext>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onClickMint = async () => {
     try {
+      setIsLoading(true);
+
       const response = await mintContract?.mintNft();
       await response.wait();
 
@@ -22,8 +25,11 @@ const MintNft: FC = () => {
       const axiosResponse = await axios.get<NftMetadata>(tokenURI);
       setNftMetadata(axiosResponse.data);
       onOpen();
+
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -40,7 +46,11 @@ const MintNft: FC = () => {
         gap={2}
       >
         {!signer && <Text>🦊 메타마스크 로그인이 필요합니다.</Text>}
-        <Button onClick={onClickMint} isDisabled={!signer}>
+        <Button
+          onClick={onClickMint}
+          isDisabled={!signer}
+          isLoading={isLoading}
+        >
           민팅하기
         </Button>
       </Flex>
