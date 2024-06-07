@@ -49,6 +49,7 @@ const MintNft: FC = () => {
           onClick={onClickMint}
           isDisabled={!signer}
           isLoading={isLoading}
+          loadingText="로딩중"
         >
           민팅하기
         </Button>
