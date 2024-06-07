@@ -90,65 +90,73 @@ const MyNft: FC = () => {
   }, [nftMetadataArray]);
 
   return (
-    <Flex
-      bgColor="red.100"
-      w="100%"
-      alignItems="center"
-      flexDir="column"
-      gap={2}
-      mt={8}
-    >
-      {!signer && <Text>🦊 메타마스크 로그인이 필요합니다.</Text>}
-      {balanceOf !== 0 && <Text>보유 NFT 개수: {balanceOf}</Text>}
-      <Grid
-        templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)"]}
-        gap={6}
-      >
-        {nftMetadataArray.map((nftMetadata, i) => (
-          <GridItem display="flex" key={i} flexDir="column" alignItems="center">
-            <Image src={nftMetadata.image} alt={nftMetadata.name} />
-            <Popover>
-              <PopoverTrigger>
-                <Button
-                  mt={4}
-                  fontSize={24}
-                  fontWeight="semibold"
-                  variant="link"
-                >
-                  {nftMetadata.name}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <PopoverBody>{nftMetadata.description}</PopoverBody>
-              </PopoverContent>
-            </Popover>
-            <Text fontWeight="semibold" fontSize={20} mt={2}>
-              Traits
-            </Text>
-            <Flex flexWrap="wrap" mt={4} gap={2} justifyContent="center">
-              {nftMetadata.attributes?.map((attribute, j) => (
-                <Box key={j} border="1px solid green" p={1} rounded="md">
-                  <Text borderBottom="1px solid green">
-                    {attribute.trait_type}
-                  </Text>
-                  <Text>{attribute.value}</Text>
-                </Box>
-              ))}
-            </Flex>
-          </GridItem>
-        ))}
-      </Grid>
-      {!isEnd && signer && (
-        <Button
-          onClick={() => getNftMetadata()}
-          isDisabled={isLoading}
-          isLoading={isLoading}
-          loadingText="로딩중"
-        >
-          더 보기
-        </Button>
+    <Flex w="100%" alignItems="center" flexDir="column" gap={2} mt={8} mb={20}>
+      {signer ? (
+        <>
+          {balanceOf !== 0 && <Text>보유 NFT 개수: {balanceOf}</Text>}
+          <Grid
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+            ]}
+            gap={6}
+          >
+            {nftMetadataArray.map((nftMetadata, i) => (
+              <GridItem
+                display="flex"
+                key={i}
+                flexDir="column"
+                alignItems="center"
+              >
+                <Image src={nftMetadata.image} alt={nftMetadata.name} />
+                <Popover>
+                  <PopoverTrigger>
+                    <Button
+                      mt={4}
+                      fontSize={24}
+                      fontWeight="semibold"
+                      variant="link"
+                    >
+                      {nftMetadata.name}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>{nftMetadata.description}</PopoverBody>
+                  </PopoverContent>
+                </Popover>
+                <Text fontWeight="semibold" fontSize={20} mt={2}>
+                  Traits
+                </Text>
+                <Flex flexWrap="wrap" mt={4} gap={2} justifyContent="center">
+                  {nftMetadata.attributes?.map((attribute, j) => (
+                    <Box key={j} border="1px solid green" p={1} rounded="md">
+                      <Text borderBottom="1px solid green">
+                        {attribute.trait_type}
+                      </Text>
+                      <Text>{attribute.value}</Text>
+                    </Box>
+                  ))}
+                </Flex>
+              </GridItem>
+            ))}
+          </Grid>
+          {!isEnd && (
+            <Button
+              onClick={() => getNftMetadata()}
+              isDisabled={isLoading}
+              isLoading={isLoading}
+              loadingText="로딩중"
+              mt={8}
+            >
+              더 보기
+            </Button>
+          )}
+        </>
+      ) : (
+        <Text>🦊 메타마스크 로그인이 필요합니다.</Text>
       )}
     </Flex>
   );
