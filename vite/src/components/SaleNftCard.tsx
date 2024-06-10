@@ -13,16 +13,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Contract, JsonRpcSigner, formatEther } from "ethers";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface SaleNftCardProps {
   nftMetadata: NftMetadata;
   tokenId: number;
   saleContract: Contract | null;
   mintContract: Contract | null;
-  nftMetadataArray: NftMetadata[];
-  setNftMetadataArray: Dispatch<SetStateAction<NftMetadata[]>>;
   signer: JsonRpcSigner | null;
+  getOnSaleTokens: () => Promise<void>;
+  getNftMetadata: () => Promise<void>;
 }
 
 const SaleNftCard: FC<SaleNftCardProps> = ({
@@ -30,9 +30,9 @@ const SaleNftCard: FC<SaleNftCardProps> = ({
   tokenId,
   saleContract,
   mintContract,
-  nftMetadataArray,
-  setNftMetadataArray,
   signer,
+  getOnSaleTokens,
+  getNftMetadata,
 }) => {
   const [currentPrice, setCurrentPrice] = useState<bigint>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,15 +64,11 @@ const SaleNftCard: FC<SaleNftCardProps> = ({
       const response = await saleContract?.purchaseNft(tokenId, {
         value: currentPrice,
       });
+
       await response.wait();
+      await getOnSaleTokens();
+      await getNftMetadata();
 
-      const temp = nftMetadataArray.filter((v) => {
-        if (v.name !== nftMetadata.name) {
-          return v;
-        }
-      });
-
-      setNftMetadataArray(temp);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
