@@ -1,23 +1,10 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Image,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverTrigger,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { OutletContext } from "../components/Layout";
 import axios from "axios";
 import { saleContractAddress } from "../abis/contractAddress";
+import NftCard from "../components/NftCard";
 
 const Count = 4;
 
@@ -145,44 +132,7 @@ const MyNft: FC = () => {
             gap={6}
           >
             {nftMetadataArray.map((nftMetadata, i) => (
-              <GridItem
-                display="flex"
-                key={i}
-                flexDir="column"
-                alignItems="center"
-              >
-                <Image src={nftMetadata.image} alt={nftMetadata.name} />
-                <Popover>
-                  <PopoverTrigger>
-                    <Button
-                      mt={4}
-                      fontSize={24}
-                      fontWeight="semibold"
-                      variant="link"
-                    >
-                      {nftMetadata.name}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverBody>{nftMetadata.description}</PopoverBody>
-                  </PopoverContent>
-                </Popover>
-                <Text fontWeight="semibold" fontSize={20} mt={2}>
-                  Traits
-                </Text>
-                <Flex flexWrap="wrap" mt={4} gap={2} justifyContent="center">
-                  {nftMetadata.attributes?.map((attribute, j) => (
-                    <Box key={j} border="1px solid green" p={1} rounded="md">
-                      <Text borderBottom="1px solid green">
-                        {attribute.trait_type}
-                      </Text>
-                      <Text>{attribute.value}</Text>
-                    </Box>
-                  ))}
-                </Flex>
-              </GridItem>
+              <NftCard key={i} nftMetadata={nftMetadata} />
             ))}
           </Grid>
           {!isEnd && (
