@@ -7,7 +7,7 @@ const Home: FC = () => {
       flexDir="column"
       alignItems="center"
       justifyContent="center"
-      bgImage="url(/images/slime.png)"
+      bgImage="url(/images/slime_bg.jpg)"
       w="100%"
     >
       <Flex border="4px solid green" p={10} rounded="3xl" bgColor="white">
