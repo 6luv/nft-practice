@@ -39,4 +39,12 @@ contract SaleNft {
             }
         }
     }
+
+    function getOnSaleTokens() public view returns (uint[] memory) {
+        return onSaleTokens;
+    }
+
+    function getTokenPrice(uint _tokenId) public view returns (uint) {
+        return tokenPrice[_tokenId];
+    }
 }
