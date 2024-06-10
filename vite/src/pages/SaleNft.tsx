@@ -15,6 +15,7 @@ const SaleNft: FC = () => {
   const getOnSaleTokens = async () => {
     try {
       const response = await saleContract?.getOnSaleTokens();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const temp = response.map((v: any) => {
         return Number(v);
       });
