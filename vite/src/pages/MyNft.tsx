@@ -15,8 +15,11 @@ const MyNft: FC = () => {
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isApprovedForAll, setIsApprovedForAll] = useState<boolean>(false);
-  const { mintContract, signer } = useOutletContext<OutletContext>();
   const [isApproveLoading, setIsApproveLoading] = useState<boolean>(false);
+  const [tokenIds, setTokenIds] = useState<number[]>([]);
+
+  const { mintContract, saleContract, signer } =
+    useOutletContext<OutletContext>();
 
   const getBalanceof = async () => {
     try {
@@ -31,6 +34,7 @@ const MyNft: FC = () => {
     try {
       setIsLoading(true);
       const temp: NftMetadata[] = [];
+      const tokenIdTemp: number[] = [];
 
       for (let i = 0; i < Count; i++) {
         if (i + currentPage * Count >= balanceOf) {
@@ -46,9 +50,11 @@ const MyNft: FC = () => {
         const tokenURI = await mintContract?.tokenURI(tokenOfOwnerByIndex);
         const axiosResponse = await axios.get<NftMetadata>(tokenURI);
         temp.push(axiosResponse.data);
+        tokenIdTemp.push(Number(tokenOfOwnerByIndex));
       }
 
       setNftMetadataArray([...nftMetadataArray, ...temp]);
+      setTokenIds([...tokenIds, ...tokenIdTemp]);
       setCurrentPage(currentPage + 1);
       setIsLoading(false);
     } catch (error) {
@@ -106,6 +112,8 @@ const MyNft: FC = () => {
     getNftMetadata();
   }, [balanceOf]);
 
+  useEffect(() => console.log(tokenIds), [tokenIds]);
+
   return (
     <Flex w="100%" alignItems="center" flexDir="column" gap={2} mt={8} mb={20}>
       {signer ? (
@@ -132,7 +140,12 @@ const MyNft: FC = () => {
             gap={6}
           >
             {nftMetadataArray.map((nftMetadata, i) => (
-              <NftCard key={i} nftMetadata={nftMetadata} />
+              <NftCard
+                key={i}
+                nftMetadata={nftMetadata}
+                tokenId={tokenIds[i]}
+                saleContract={saleContract}
+              />
             ))}
           </Grid>
           {!isEnd && (
