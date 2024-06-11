@@ -9,7 +9,7 @@ import NftCard from "../components/NftCard";
 const Count = 4;
 
 const MyNft: FC = () => {
-  const [nftMetadataArray, setNftMetadataArray] = useState<NftMetadata[]>([]);
+  const [nftMetadataArray, setNftMetadataArray] = useState<INftMetadata[]>([]);
   const [balanceOf, setBalanceOf] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [isEnd, setIsEnd] = useState<boolean>(false);
@@ -33,7 +33,7 @@ const MyNft: FC = () => {
   const getNftMetadata = async () => {
     try {
       setIsLoading(true);
-      const temp: NftMetadata[] = [];
+      const temp: INftMetadata[] = [];
       const tokenIdTemp: number[] = [];
 
       for (let i = 0; i < Count; i++) {
@@ -48,7 +48,7 @@ const MyNft: FC = () => {
         );
 
         const tokenURI = await mintContract?.tokenURI(tokenOfOwnerByIndex);
-        const axiosResponse = await axios.get<NftMetadata>(tokenURI);
+        const axiosResponse = await axios.get<INftMetadata>(tokenURI);
         temp.push(axiosResponse.data);
         tokenIdTemp.push(Number(tokenOfOwnerByIndex));
       }

@@ -2,7 +2,7 @@ interface Window {
   ethereum: any;
 }
 
-interface NftMetadata {
+interface INftMetadata {
   name: string;
   description: string;
   image: string;
@@ -10,4 +10,9 @@ interface NftMetadata {
     trait_type: string;
     value: string;
   }[];
+}
+
+interface ISaleNftMetadata extends INftMetadata {
+  price: bigint;
+  tokenOwner: string;
 }
